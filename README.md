@@ -3,6 +3,8 @@
 1. Run `./gradlew :plugin:compile:publishToMavenLocal :plugin:gradle:publishToMavenLocal`
 2. Run `./gradlew clean build --no-build-cache --info`
 
+output in root build
+
 links
 
 https://github.com/ZacSweers/metro

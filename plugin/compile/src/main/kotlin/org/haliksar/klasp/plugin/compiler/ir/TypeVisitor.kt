@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.visitors.IrTypeVisitorVoid
 
+@Deprecated("FIR (Frontend IR) compiler is a new Kotlin Frontend")
 class TypeVisitor(
     private val collector: MessageCollector
 ) : IrTypeVisitorVoid() {

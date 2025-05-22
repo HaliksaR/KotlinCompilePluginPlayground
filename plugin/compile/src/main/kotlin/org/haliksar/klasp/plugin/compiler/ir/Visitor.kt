@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.visitors.IrVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 
+@Deprecated("FIR (Frontend IR) compiler is a new Kotlin Frontend")
 internal class Visitor(private val module: String) : IrVisitorVoid() {
 
     private lateinit var last: Entity

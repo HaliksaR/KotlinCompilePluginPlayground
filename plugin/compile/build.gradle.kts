@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.embeddable)
+    compileOnly(libs.reflect)
     implementation(libs.serialization)
 }
 

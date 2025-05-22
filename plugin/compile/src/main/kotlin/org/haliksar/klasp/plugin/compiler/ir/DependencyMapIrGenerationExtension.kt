@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.konan.file.File
 
+@Deprecated("FIR (Frontend IR) compiler is a new Kotlin Frontend")
 class DependencyMapIrGenerationExtension(
     private val module: String,
     private val buildDir: String
@@ -33,12 +34,13 @@ class DependencyMapIrGenerationExtension(
         }
         moduleFragment.acceptVoid(TypeVisitor(pluginContext.messageCollector))
     }
-}
 
-internal fun Entity.print(collector: MessageCollector, deep: Int = 0) {
-    val arrow = "\t".repeat(deep) + "->"
-    collector.report(CompilerMessageSeverity.INFO, arrow + name + " : $type")
-    dependencies.forEach {
-        it.print(collector, deep + 1)
+    private fun Entity.print(collector: MessageCollector, deep: Int = 0) {
+        val arrow = "\t".repeat(deep) + "->"
+        collector.report(CompilerMessageSeverity.INFO, arrow + name + " : $type")
+        dependencies.forEach {
+            it.print(collector, deep + 1)
+        }
     }
 }
+
