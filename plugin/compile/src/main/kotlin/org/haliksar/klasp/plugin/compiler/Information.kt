@@ -6,3 +6,4 @@ const val VERSION = "0.0.1"
 
 const val MODULE_NAME_OPTION = "moduleName"
 const val BUILD_DIR_OPTION = "buildDir"
+const val ROOT_BUILD_DIR_OPTION = "rootBuildDir"

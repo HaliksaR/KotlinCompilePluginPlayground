@@ -12,18 +12,16 @@ import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
 import org.jetbrains.kotlin.konan.file.File
 
 @OptIn(DeprecatedForRemovalCompilerApi::class)
-object FirFileDepsChecker : FirFileChecker(MppCheckerKind.Common) {
+object Logger : FirFileChecker(MppCheckerKind.Common) {
 
     override fun check(declaration: FirFile, context: CheckerContext, reporter: DiagnosticReporter) {
         val buildDir = context.session.options.buildDir
         val moduleName = context.session.options.moduleName
-
         val logs = buildList {
-            add(moduleName)
-            val visitor = TypeCollectorVisitor(this)
+            val visitor = LoggerVisitor(this)
             declaration.accept(visitor)
         }
-        File("$buildDir/$moduleName-out.log")
+        File("$buildDir/$moduleName.log")
             .apply {
                 if (!exists) createNew()
                 writeLines(logs)
@@ -31,7 +29,7 @@ object FirFileDepsChecker : FirFileChecker(MppCheckerKind.Common) {
     }
 }
 
-class TypeCollectorVisitor(
+private class LoggerVisitor(
     private val logs: MutableList<String>,
 ) : FirVisitorVoid() {
 
@@ -39,18 +37,19 @@ class TypeCollectorVisitor(
     val arrow: String
         get() = "\t".repeat(deep) + "->"
 
-    override fun visitElement(element: FirElement) {
-        deep++
-        val properties = element::class.members.joinToString("\n") {
-            "\t".repeat(deep + 1) + it.name + " : " + runCatching { it.call(element) }.getOrNull()
-        }
-        logs.add("$arrow${element}\n$properties")
-        element.acceptChildren(this)
-        deep--
-    }
-
     override fun visitFile(file: FirFile) {
         logs.add("$arrow${file.sourceFile?.path}")
         super.visitFile(file)
+    }
+
+    override fun visitElement(element: FirElement) {
+        deep++
+        val parents = element::class.supertypes.joinToString("\n") { it.toString() }
+        val properties = element::class.members.joinToString("\n") {
+            "\t".repeat(deep + 1) + it.visibility + " : " + it.name + " : " + runCatching { it.call(element) }.getOrNull()
+        }
+        logs.add("$arrow$element\n$arrow$parents\n$properties")
+        element.acceptChildren(this)
+        deep--
     }
 }

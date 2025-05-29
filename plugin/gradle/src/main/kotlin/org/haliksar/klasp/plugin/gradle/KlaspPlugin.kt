@@ -15,7 +15,11 @@ class KlaspPlugin : KotlinCompilerPluginSupportPlugin {
                 SubpluginOption(MODULE_NAME_OPTION, kotlinCompilation.target.project.path),
                 SubpluginOption(
                     BUILD_DIR_OPTION,
-                    // kotlinCompilation.target.project.layout.buildDirectory.asFile.get().absolutePath
+                    kotlinCompilation.target.project.layout.buildDirectory.asFile.get().absolutePath
+                    //  kotlinCompilation.target.project.rootProject.layout.buildDirectory.asFile.get().absolutePath
+                ),
+                SubpluginOption(
+                    ROOT_BUILD_DIR_OPTION,
                     kotlinCompilation.target.project.rootProject.layout.buildDirectory.asFile.get().absolutePath
                 ),
             )
