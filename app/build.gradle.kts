@@ -7,6 +7,16 @@ application {
     mainClass = "org.haliksar.app.AppKt"
 }
 
+kotlin {
+    sourceSets {
+        test {
+            kotlin {
+                srcDirs("src/unitTest/kotlin")
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(project(":feature:foo"))
     implementation(project(":feature:bar"))

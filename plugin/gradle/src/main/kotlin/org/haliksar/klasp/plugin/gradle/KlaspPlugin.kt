@@ -9,21 +9,17 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 
 class KlaspPlugin : KotlinCompilerPluginSupportPlugin {
 
-    override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> =
-        kotlinCompilation.target.project.provider {
+    override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> {
+        val moduleName = kotlinCompilation.project.path
+        val rootBuildDir = kotlinCompilation.project.rootProject.layout.buildDirectory.asFile.get().absolutePath
+
+        return kotlinCompilation.project.provider {
             listOf(
-                SubpluginOption(MODULE_NAME_OPTION, kotlinCompilation.target.project.path),
-                SubpluginOption(
-                    BUILD_DIR_OPTION,
-                    kotlinCompilation.target.project.layout.buildDirectory.asFile.get().absolutePath
-                    //  kotlinCompilation.target.project.rootProject.layout.buildDirectory.asFile.get().absolutePath
-                ),
-                SubpluginOption(
-                    ROOT_BUILD_DIR_OPTION,
-                    kotlinCompilation.target.project.rootProject.layout.buildDirectory.asFile.get().absolutePath
-                ),
+                SubpluginOption(MODULE_NAME_OPTION, moduleName),
+                SubpluginOption(ROOT_BUILD_DIR_OPTION, rootBuildDir),
             )
         }
+    }
 
     override fun getCompilerPluginId(): String = ARTIFACT_ID
 
@@ -35,5 +31,5 @@ class KlaspPlugin : KotlinCompilerPluginSupportPlugin {
         )
 
     override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
-        kotlinCompilation.target.project.plugins.hasPlugin(KlaspPlugin::class.java)
+        kotlinCompilation.project.plugins.hasPlugin(KlaspPlugin::class.java)
 }

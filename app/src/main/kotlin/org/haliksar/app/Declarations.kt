@@ -20,21 +20,9 @@ value class VClass(val value: String)
 
 enum class EClass
 
-const val CONST = 0
-
-typealias Alias = EClass
-
 operator fun String.invoke() {
 
 }
-
-val value = ""
-
-var getter: String
-    get() = ""
-    set(value) {
-        value
-    }
 
 fun func() {
 

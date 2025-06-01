@@ -1,18 +1,17 @@
 package org.haliksar.klasp.plugin.compiler.fir
 
+import org.haliksar.klasp.plugin.compiler.entity.Declaration
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.extensions.FirExtensionSessionComponent
 
-class Options(
+internal class Options(
     session: FirSession,
-    val buildDir: String,
-    val rootBuildDir: String,
-    val moduleName: String,
+    private val declarations: MutableSet<Declaration>,
 ) : FirExtensionSessionComponent(session) {
 
-    operator fun component1() = buildDir
-    operator fun component2() = rootBuildDir
-    operator fun component3() = moduleName
+    fun addDeclarations(elements: Collection<Declaration>) {
+        declarations.addAll(elements)
+    }
 }
 
-val FirSession.options: Options by FirSession.sessionComponentAccessor()
+internal val FirSession.options: Options by FirSession.sessionComponentAccessor()
